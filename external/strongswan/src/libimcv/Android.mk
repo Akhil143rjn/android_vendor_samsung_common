@@ -121,4 +121,6 @@ LOCAL_PRELINK_MODULE := false
 
 LOCAL_SHARED_LIBRARIES += libstrongswan libtncif libtpmtss
 
+LOCAL_PROPRIETARY_MODULE := true
+
 include $(BUILD_SHARED_LIBRARY)

@@ -594,6 +594,12 @@ INSERT INTO directories (		/* 14 */
  '/system/lib'
 );
 
+INSERT INTO directories (		/* 15 */
+  path
+) VALUES (
+ '/vendor/lib'
+);
+
 /* Files */
 
 INSERT INTO files (				/*  1 */
@@ -1522,6 +1528,12 @@ INSERT INTO policies (			/* 15 */
   type, name, dir, rec_fail, rec_noresult
 ) VALUES (
   8, 'Get /system/lib', 14, 0, 0
+);
+
+INSERT INTO policies (			/* 15-2 */
+  type, name, dir, rec_fail, rec_noresult
+) VALUES (
+  8, 'Get /vendor/lib', 15, 0, 0
 );
 
 INSERT INTO policies (          /* 16 */

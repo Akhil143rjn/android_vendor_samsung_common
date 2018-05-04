@@ -14,7 +14,7 @@
  */
 
 #include <openssl/opensslv.h>
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #if OPENSSL_VERSION_NUMBER >= 0x0090807fL
 #ifndef OPENSSL_NO_CMS

@@ -14,7 +14,7 @@
  * for more details.
  */
 
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #ifndef OPENSSL_NO_RSA
 
@@ -28,9 +28,9 @@
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/*#if OPENSSL_VERSION_NUMBER < 0x10100000L
 OPENSSL_KEY_FALLBACK(RSA, key, n, e, d)
-#endif
+#endif*/
 
 typedef struct private_openssl_rsa_public_key_t private_openssl_rsa_public_key_t;
 
@@ -429,10 +429,8 @@ openssl_rsa_public_key_t *openssl_rsa_public_key_load(key_type_t type,
 		this->rsa = RSA_new();
 		bn_n = BN_bin2bn((const u_char*)n.ptr, n.len, NULL);
 		bn_e = BN_bin2bn((const u_char*)e.ptr, e.len, NULL);
-		if (RSA_set0_key(this->rsa, bn_n, bn_e, NULL))
-		{
-			return &this->public;
-		}
+		RSA_get0_key(this->rsa, bn_n, bn_e, NULL);
+		return &this->public;
 	}
 	destroy(this);
 	return NULL;

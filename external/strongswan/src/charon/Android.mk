@@ -24,5 +24,7 @@ LOCAL_PRELINK_MODULE := false
 
 LOCAL_SHARED_LIBRARIES += libstrongswan libcharon
 
+LOCAL_PROPRIETARY_MODULE := true
+
 include $(BUILD_EXECUTABLE)
 

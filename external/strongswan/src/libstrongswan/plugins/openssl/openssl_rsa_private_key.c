@@ -14,7 +14,7 @@
  * for more details.
  */
 
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #ifndef OPENSSL_NO_RSA
 
@@ -36,11 +36,11 @@
  */
 #define PUBLIC_EXPONENT 0x10001
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/*#if OPENSSL_VERSION_NUMBER < 0x10100000L
 OPENSSL_KEY_FALLBACK(RSA, key, n, e, d)
 OPENSSL_KEY_FALLBACK(RSA, factors, p, q)
 OPENSSL_KEY_FALLBACK(RSA, crt_params, dmp1, dmq1, iqmp)
-#endif
+#endif*/
 
 typedef struct private_openssl_rsa_private_key_t private_openssl_rsa_private_key_t;
 
@@ -470,19 +470,10 @@ openssl_rsa_private_key_t *openssl_rsa_private_key_load(key_type_t type,
 		bn_n = BN_bin2bn((const u_char*)n.ptr, n.len, NULL);
 		bn_e = BN_bin2bn((const u_char*)e.ptr, e.len, NULL);
 		bn_d = BN_bin2bn((const u_char*)d.ptr, d.len, NULL);
-		if (!RSA_set0_key(this->rsa, bn_n, bn_e, bn_d))
-		{
-			destroy(this);
-			return NULL;
-
-		}
+		RSA_get0_key(this->rsa, bn_n, bn_e, bn_d);
 		bn_p = BN_bin2bn((const u_char*)p.ptr, p.len, NULL);
 		bn_q = BN_bin2bn((const u_char*)q.ptr, q.len, NULL);
-		if (!RSA_set0_factors(this->rsa, bn_p, bn_q))
-		{
-			destroy(this);
-			return NULL;
-		}
+		RSA_get0_factors(this->rsa, bn_p, bn_q);
 		if (exp1.ptr)
 		{
 			dmp1 = BN_bin2bn((const u_char*)exp1.ptr, exp1.len, NULL);
@@ -492,8 +483,8 @@ openssl_rsa_private_key_t *openssl_rsa_private_key_load(key_type_t type,
 			dmq1 = BN_bin2bn((const u_char*)exp2.ptr, exp2.len, NULL);
 		}
 		iqmp = BN_bin2bn((const u_char*)coeff.ptr, coeff.len, NULL);
-		if (RSA_set0_crt_params(this->rsa, dmp1, dmq1, iqmp) &&
-			RSA_check_key(this->rsa) == 1)
+		RSA_get0_crt_params(this->rsa, dmp1, dmq1, iqmp);
+		if (RSA_check_key(this->rsa) == 1)
 		{
 			return &this->public;
 		}

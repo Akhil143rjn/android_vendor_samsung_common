@@ -42,11 +42,11 @@ libgmp_PATH := external/strongswan-support/gmp
 openssl_PATH := external/openssl/include
 
 # some definitions
-strongswan_DIR := "/system/bin"
-strongswan_SBINDIR := "/system/bin"
+strongswan_DIR := "/vendor/bin"
+strongswan_SBINDIR := "/vendor/bin"
 strongswan_PIDDIR := "/data/misc/vpn"
 strongswan_PLUGINDIR := "$(strongswan_IPSEC_DIR)/ipsec"
-strongswan_CONFDIR := "/system/etc"
+strongswan_CONFDIR := "/vendor/etc"
 strongswan_STRONGSWAN_CONF := "$(strongswan_CONFDIR)/strongswan.conf"
 
 # CFLAGS (partially from a configure run using droid-gcc)

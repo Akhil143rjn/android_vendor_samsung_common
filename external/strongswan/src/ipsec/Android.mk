@@ -9,6 +9,8 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_MODULE_CLASS := EXECUTABLES
 
+LOCAL_PROPRIETARY_MODULE := true
+
 GEN := $(local-intermediates-dir)/ipsec
 
 $(GEN) : PRIVATE_PATH := $(LOCAL_PATH)

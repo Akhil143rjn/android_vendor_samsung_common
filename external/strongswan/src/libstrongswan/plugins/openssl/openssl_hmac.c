@@ -35,7 +35,7 @@
  * THE SOFTWARE.
  */
 
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #ifndef OPENSSL_NO_HMAC
 

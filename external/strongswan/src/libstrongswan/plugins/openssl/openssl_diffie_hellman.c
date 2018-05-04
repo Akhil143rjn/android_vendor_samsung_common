@@ -14,7 +14,7 @@
  * for more details.
  */
 
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #ifndef OPENSSL_NO_DH
 
@@ -27,11 +27,13 @@
 #include <utils/debug.h>
 
 /* these were added with 1.1.0 when DH was made opaque */
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+/*#if OPENSSL_VERSION_NUMBER < 0x10100000L
 OPENSSL_KEY_FALLBACK(DH, key, pub_key, priv_key)
 OPENSSL_KEY_FALLBACK(DH, pqg, p, q, g)
 #define DH_set_length(dh, len) ({ (dh)->length = len; 1; })
-#endif
+#endif*/
+
+#define DH_set_length(dh, len) ({ (dh)->length = len; 1; })
 
 typedef struct private_openssl_diffie_hellman_t private_openssl_diffie_hellman_t;
 
@@ -131,10 +133,7 @@ METHOD(diffie_hellman_t, set_private_value, bool,
 	privkey = BN_bin2bn(value.ptr, value.len, NULL);
 	if (privkey)
 	{
-		if (!DH_set0_key(this->dh, NULL, privkey))
-		{
-			return FALSE;
-		}
+		DH_get0_key(this->dh, NULL, privkey);
 		chunk_clear(&this->shared_secret);
 		this->computed = FALSE;
 		return DH_generate_key(this->dh);
@@ -162,10 +161,7 @@ static status_t set_modulus(private_openssl_diffie_hellman_t *this)
 	}
 	p = BN_bin2bn(params->prime.ptr, params->prime.len, NULL);
 	g = BN_bin2bn(params->generator.ptr, params->generator.len, NULL);
-	if (!DH_set0_pqg(this->dh, p, NULL, g))
-	{
-		return FAILED;
-	}
+	DH_get0_pqg(this->dh, p, NULL, g);
 	if (params->exp_len != params->prime.len)
 	{
 #ifdef OPENSSL_IS_BORINGSSL
@@ -225,12 +221,8 @@ openssl_diffie_hellman_t *openssl_diffie_hellman_create(
 
 	if (group == MODP_CUSTOM)
 	{
-		if (!DH_set0_pqg(this->dh, BN_bin2bn(p.ptr, p.len, NULL), NULL,
-						 BN_bin2bn(g.ptr, g.len, NULL)))
-		{
-			destroy(this);
-			return NULL;
-		}
+		DH_get0_pqg(this->dh, BN_bin2bn(p.ptr, p.len, NULL), NULL,
+						 BN_bin2bn(g.ptr, g.len, NULL));
 	}
 	else
 	{

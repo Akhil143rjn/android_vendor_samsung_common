@@ -13,7 +13,7 @@
  * for more details.
  */
 
-#include <openssl/opensslfeatures.h>
+#include <openssl/base.h>
 
 #ifndef OPENSSL_NO_EC
 
