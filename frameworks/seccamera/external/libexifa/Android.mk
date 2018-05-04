@@ -45,4 +45,6 @@ LOCAL_CFLAGS += -Wno-enum-compare
 
 LOCAL_MODULE:= libexifa
 
+LOCAL_PROPRIETARY_MODULE := true
+
 include $(BUILD_SHARED_LIBRARY)
